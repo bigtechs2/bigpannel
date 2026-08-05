@@ -1,6 +1,5 @@
-<p align="center">
-  <img src="https://files.catbox.moe/54sbu9.png" alt="BIGST4CK Banner" width="100%">
-</p>
+![BIGST4CK Banner](https://files.catbox.moe/54sbu9.png)
+
 ## bigpannelbot
 
 servers are available here
