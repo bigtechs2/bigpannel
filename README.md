@@ -1,7 +1,11 @@
 <p align="center">
   <img src="https://files.catbox.moe/54sbu9.png" alt="BIGST4CK Banner" width="100%">
 </p>
-# bigpannel Telegram Bot
+### bigpannelbot
+
+servers are available here
+
+http://t.me/bigpannelbot
 
 **Server Selling Bot with Pterodactyl Integration in telegram**
 
