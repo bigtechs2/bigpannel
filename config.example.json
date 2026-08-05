@@ -1,0 +1,43 @@
+{
+  "bot": {
+    "name": "BIGST4CK",
+    "owner": "bigmanjtech™",
+    "description": "Server Hosting & Automation"
+  },
+  "telegram": {
+    "botToken": "YOUR_BOT_TOKEN_FROM_BOTFATHER",
+    "ownerId": "YOUR_TELEGRAM_USER_ID"
+  },
+  "pterodactyl": {
+    "panelUrl": "https://panel.yourdomain.com",
+    "apiKey": "ptla_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "defaultNest": 5,
+    "defaultEgg": 1,
+    "defaultLocation": 1,
+    "defaultLimits": {
+      "memory": 1024,
+      "disk": 5120,
+      "cpu": 100
+    }
+  },
+  "plans": [
+"plans": [
+    { "name": "1 GB", "ram": 1024, "disk": 5120, "cpu": 50, "price": 1500, "currency": "TZS" },
+    { "name": "2 GB", "ram": 2048, "disk": 10240, "cpu": 100, "price": 2500, "currency": "TZS" },
+    { "name": "3 GB", "ram": 3072, "disk": 15360, "cpu": 150, "price": 3500, "currency": "TZS" },
+    { "name": "4 GB", "ram": 4096, "disk": 20480, "cpu": 200, "price": 5000, "currency": "TZS" },
+    { "name": "5 GB", "ram": 5120, "disk": 25600, "cpu": 250, "price": 6500, "currency": "TZS" },
+    { "name": "6 GB", "ram": 6144, "disk": 30720, "cpu": 300, "price": 8000, "currency": "TZS" },
+    { "name": "7 GB", "ram": 7168, "disk": 35840, "cpu": 350, "price": 9500, "currency": "TZS" },
+    { "name": "8 GB", "ram": 8192, "disk": 40960, "cpu": 400, "price": 11000, "currency": "TZS" },
+    { "name": "9 GB", "ram": 9216, "disk": 46080, "cpu": 450, "price": 13000, "currency": "TZS" },
+    { "name": "10 GB", "ram": 10240, "disk": 51200, "cpu": 500, "price": 15000, "currency": "TZS" },
+    { "name": "Unlimited", "ram": 0, "disk": 0, "cpu": 0, "price": 25000, "currency": "TZS" }
+]
+  ],
+  "payments": {
+    "method": "manual",
+    "details": "halopesa: 255636756591\nHalopesa: 255636756591\nEmail: bigmanj.tech@gmail.com"
+  },
+  "footer": "© BIGST4CK by bigmanjtech™"
+}
