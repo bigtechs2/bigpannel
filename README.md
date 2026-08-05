@@ -98,6 +98,34 @@
 
 ---
 
+### Project Stucture 
+```
+BIGST4CK-Telegram/
+├── commands/
+│   ├── start.js
+│   ├── plans.js
+│   ├── buy.js
+│   ├── status.js
+│   ├── myservers.js
+│   ├── contact.js
+│   ├── help.js
+│   ├── admin.js
+│   ├── delserver.js
+│   └── deluser.js
+├── lib/
+│   ├── database.js
+│   ├── pterodactyl.js
+│   ├── payments.js
+│   └── createPanel.js
+├── database/           # Auto-created
+├── config.json
+├── package.json
+├── index.js
+├── .env
+└── README.md
+```
+---
+
 ## 🚀 Installation
 
 ### Prerequisites
@@ -129,3 +157,33 @@ nano .env
 
 # 6. Start the bot
 npm start
+```
+---
+## 💬 Support / Contact
+
+| Name | Contact |
+|------|---------|
+| **[bigtechs1](https://wa.me/255777580820)** | WhatsApp |
+| **[bigtechs2](https://wa.me/255636756591)** | WhatsApp · [Telegram](https://t.me/bigtechs2) |
+| **[bigtechs3](https://wa.me/255705517165)** | WhatsApp |
+| **[Join Group](https://chat.whatsapp.com/EWlNm6bMYJCELwzvnmboyC)** | WhatsApp Group |
+| **[BIGST4CK Updates](https://whatsapp.com/channel/0029VbDJJY19WtC1T0Vgqp0v)** | WhatsApp Channel |
+| **[bigmanjtech™](mailto:bigmanj.tech@gmail.com)** | Email |
+
+---
+
+### 📢 **BIGST4CK Family Group**
+
+> Welcome to the **BIGST4CK Family Group**! 🚀 This is the official WhatsApp group for users, developers, and enthusiasts of the BIGST4CK brand. Share your experiences, ask questions, report bugs, suggest new features, and connect with the team and other users.
+
+**[Join Group](https://chat.whatsapp.com/EWlNm6bMYJCELwzvnmboyC)**
+
+---
+
+### 📢 **BIGST4CK Updates Channel**
+
+> 📢 The official broadcast channel for **BIGST4CK**. Get the latest news, updates, new features, release notes, and important announcements. Stay informed and never miss an update!
+
+**[Join WhatsApp Channel](https://whatsapp.com/channel/0029VbDJJY19WtC1T0Vgqp0v)**
+
+**Built by bigtech2 under bimanjtech™ with ♥︎**
