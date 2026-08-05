@@ -1,6 +1,9 @@
-# 🤖 BIGST4CK Telegram Bot
+<p align="center">
+  <img src="https://files.catbox.moe/54sbu9.png" alt="BIGST4CK Banner" width="100%">
+</p>
+# bigpannel Telegram Bot
 
-**Server Selling Bot with Pterodactyl Integration**
+**Server Selling Bot with Pterodactyl Integration in telegram**
 
 ![Version](https://img.shields.io/badge/version-1.0.0-grey)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green)
@@ -187,4 +190,4 @@ npm start
 
 **[Join WhatsApp Channel](https://whatsapp.com/channel/0029VbDJJY19WtC1T0Vgqp0v)**
 
-**Built by bigtech2 under bimanjtech™ with ♥︎**
+**Built by bigtech2 under bigmanjtech™ with ♥︎**
