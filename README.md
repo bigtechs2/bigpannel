@@ -1,4 +1,4 @@
-![BIGST4CK Banner](https://files.catbox.moe/54sbu9.png)
+![bigpannel bot Banner](https://files.catbox.moe/54sbu9.png)
 
 ## bigpannelbot
 
@@ -11,8 +11,8 @@ http://t.me/bigpannelbot
 ![Version](https://img.shields.io/badge/version-1.0.0-grey)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-[![Fork](https://img.shields.io/badge/Fork-Repo-orange)](https://github.com/bigtechs2/BIGST4CK-Telegram/fork)
-[![Download ZIP](https://img.shields.io/badge/Download-ZIP-red)](https://github.com/bigtechs2/BIGST4CK-Telegram/archive/refs/heads/main.zip)
+[![Fork](https://img.shields.io/badge/Fork-Repo-orange)](https://github.com/bigtechs2/bigpannel/fork)
+[![Download ZIP](https://img.shields.io/badge/Download-ZIP-red)](https://github.com/bigtechs2/bigpannel/archive/refs/heads/main.zip)
 
 **Built by bigmanjtech™ with ♥︎**
 
