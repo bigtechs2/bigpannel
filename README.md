@@ -165,7 +165,7 @@ npm start
 |------|---------|
 | **[bigtechs1](https://wa.me/255777580820)** | WhatsApp |
 | **[bigtechs2](https://wa.me/255636756591)** | WhatsApp ·
-[Telegram](https://t.me/bigmanj09) |
+[Telegram](https://t.me/bigmanj09) |telegram|
 | **[bigtechs3](https://wa.me/255705517165)** | WhatsApp |
 | **[Join Group](https://chat.whatsapp.com/EWlNm6bMYJCELwzvnmboyC)** | WhatsApp Group |
 | **[BIGST4CK Updates](https://whatsapp.com/channel/0029VbDJJY19WtC1T0Vgqp0v)** | WhatsApp Channel |
