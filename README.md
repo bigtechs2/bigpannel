@@ -1,147 +1,131 @@
-# bigpannel
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | Big Hosting by BigManJ Tech™</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="brand-header">
-                <h1>Big Hosting™</h1>
-                <p>by BigManJ Tech</p>
-            </div>
-            
-            <h2>Create Your Account</h2>
-            <p class="sub-text">Deploy your bots in seconds with Mobile Money or Card.</p>
+# 🤖 BIGST4CK Telegram Bot
 
-            <form id="registerForm">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="fullName" placeholder="e.g., Hamza Juma" required>
-                </div>
+**Server Selling Bot with Pterodactyl Integration**
 
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" placeholder="you@example.com" required>
-                </div>
+![Version](https://img.shields.io/badge/version-1.0.0-grey)
+![Node.js](https://img.shields.io/badge/Node.js-18+-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+[![Fork](https://img.shields.io/badge/Fork-Repo-orange)](https://github.com/bigtechs2/BIGST4CK-Telegram/fork)
+[![Download ZIP](https://img.shields.io/badge/Download-ZIP-red)](https://github.com/bigtechs2/BIGST4CK-Telegram/archive/refs/heads/main.zip)
 
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="Min 8 characters" minlength="8" required>
-                </div>
+**Built with ❤️ by bigmanjtech™**
 
-                <!-- COUNTRY SELECTION -->
-                <div class="form-group">
-                    <label>Country <span class="required">*</span></label>
-                    <select id="country" required>
-                        <option value="">-- Select your country --</option>
-                        <option value="Tanzania">🇹🇿 Tanzania</option>
-                        <option value="Kenya">🇰🇪 Kenya</option>
-                        <option value="Uganda">🇺🇬 Uganda</option>
-                        <option value="Nigeria">🇳🇬 Nigeria</option>
-                        <option value="South Africa">🇿🇦 South Africa</option>
-                        <option value="United States">🇺🇸 United States</option>
-                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
-                        <option value="Other">🌍 Other</option>
-                    </select>
-                </div>
+---
 
-                <!-- PHONE NUMBER (Only visible if Tanzania is selected) -->
-                <div class="form-group hidden" id="phoneGroup">
-                    <label>Mobile Number (For M-Pesa / Tigo Pesa)</label>
-                    <div class="phone-input-wrapper">
-                        <span class="country-code">+255</span>
-                        <input type="tel" id="phone" placeholder="712 345 678">
-                    </div>
-                    <small>We'll send a payment request to this number when you purchase.</small>
-                </div>
+## 📌 Table of Contents
 
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="terms" required>
-                        I agree to the <a href="/terms.html">Terms of Service</a> and <a href="/privacy.html">Privacy Policy</a>.
-                    </label>
-                </div>
+- [About](#about)
+- [Features](#features)
+- [Server Plans](#server-plans)
+- [Commands](#commands)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Deployment](#deployment)
+- [Contributors](#contributors)
+- [License](#license)
+- [Support / Contact](#support--contact)
 
-                <button type="submit" id="registerBtn">Create Account 🚀</button>
+---
 
-                <div id="registerStatus" class="status-msg"></div>
+## 🎯 About
 
-                <p class="auth-switch">
-                    Already have an account? <a href="/login.html">Log In</a>
-                </p>
-            </form>
+**BIGST4CK Telegram Bot** is a powerful server selling bot that integrates with **Pterodactyl** to automate server creation, user management, and payment verification. It's designed to help you sell hosting plans directly from Telegram.
 
-            <div class="footer-copyright">
-                © 2026 Big Hosting by BigManJ Tech™. All rights reserved.
-            </div>
-        </div>
-    </div>
+---
 
-    <script>
-        // Dynamic Phone Field Logic
-        const countrySelect = document.getElementById('country');
-        const phoneGroup = document.getElementById('phoneGroup');
-        const phoneInput = document.getElementById('phone');
-        const registerForm = document.getElementById('registerForm');
-        const statusDiv = document.getElementById('registerStatus');
-        const btn = document.getElementById('registerBtn');
+## ✨ Features
 
-        countrySelect.addEventListener('change', function() {
-            if (this.value === 'Tanzania') {
-                phoneGroup.classList.remove('hidden');
-                phoneInput.required = true;
-            } else {
-                phoneGroup.classList.add('hidden');
-                phoneInput.required = false;
-                phoneInput.value = '';
-            }
-        });
+- 📋 **Server Plans** – 1GB to 10GB + Unlimited
+- 💰 **Payment System** – Manual & Crypto support
+- 👤 **User Management** – Register, status, server list
+- 🔑 **Admin Panel** – Verify payments, ban/unban, delete servers
+- 🚀 **Direct Commands** – `/1gb`, `/2gb`, ..., `/10gb`, `/unli`
+- 📊 **Server Status** – View active servers & remaining days
+- 🤖 **Pterodactyl API** – Auto-create users & servers
+- 📞 **24/7 Support** – Contact owner directly
+- 🛡️ **Ban System** – Block abusive users
 
-        // Handle Registration
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            statusDiv.innerHTML = '';
-            btn.disabled = true;
-            btn.textContent = 'Creating Account...';
+---
 
-            const payload = {
-                full_name: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                country: countrySelect.value,
-                phone: phoneInput.value || null,
-            };
+## 💰 Server Plans
 
-            try {
-                const res = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+| Plan | RAM | CPU | Disk | Price (Monthly) |
+|------|-----|-----|------|-----------------|
+| **1 GB** | 1,024 MB | 50% | 5 GB | 1,500 TZS |
+| **2 GB** | 2,048 MB | 100% | 10 GB | 2,500 TZS |
+| **3 GB** | 3,072 MB | 150% | 15 GB | 3,500 TZS |
+| **4 GB** | 4,096 MB | 200% | 20 GB | 5,000 TZS |
+| **5 GB** | 5,120 MB | 250% | 25 GB | 6,500 TZS |
+| **6 GB** | 6,144 MB | 300% | 30 GB | 8,000 TZS |
+| **7 GB** | 7,168 MB | 350% | 35 GB | 9,500 TZS |
+| **8 GB** | 8,192 MB | 400% | 40 GB | 11,000 TZS |
+| **9 GB** | 9,216 MB | 450% | 45 GB | 13,000 TZS |
+| **10 GB** | 10,240 MB | 500% | 50 GB | 15,000 TZS |
+| **Unlimited** | ∞ | ∞ | ∞ | 25,000 TZS |
 
-                const data = await res.json();
+> *All plans include full root access and 24/7 support.*
 
-                if (res.ok) {
-                    statusDiv.style.color = 'green';
-                    statusDiv.innerHTML = '✅ Account created! Redirecting to login...';
-                    setTimeout(() => window.location.href = '/login.html', 1500);
-                } else {
-                    statusDiv.style.color = 'red';
-                    statusDiv.innerHTML = '❌ ' + (data.error || 'Registration failed. Please try again.');
-                }
-            } catch (err) {
-                statusDiv.style.color = 'red';
-                statusDiv.innerHTML = '❌ Network error. Check your connection.';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Create Account 🚀';
-            }
-        });
-    </script>
-</body>
-</html>
+---
+
+## 📋 Commands
+
+### User Commands
+
+| Command | Description |
+|---------|-------------|
+| `/start` | Welcome message |
+| `/plans` | View all server plans |
+| `/buy` | Purchase a server |
+| `/status` | Your server status |
+| `/myservers` | List all your servers |
+| `/1gb` – `/10gb` | Create specific plan directly |
+| `/unli` | Create unlimited server |
+| `/contact` | Contact support |
+| `/help` | Help & FAQ |
+
+### Admin Commands
+
+| Command | Description |
+|---------|-------------|
+| `/admin` | Admin panel |
+| `/verify <user_id>` | Verify payment & create server |
+| `/pending` | View pending orders |
+| `/ban <user_id>` | Ban a user |
+| `/unban <user_id>` | Unban a user |
+| `/delserver <server_id>` | Delete a server |
+| `/deluser <user_id>` | Delete a user |
+| `/restart` | Restart the bot |
+
+---
+
+## 🚀 Installation
+
+### Prerequisites
+
+- **Node.js** 18+
+- **npm** or **yarn**
+- A **Telegram** account
+- A **Pterodactyl** panel
+
+### Steps
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/bigtechs2/BIGST4CK-Telegram.git
+cd BIGST4CK-Telegram
+
+# 2. Install dependencies
+npm install
+
+# 3. Copy and configure the example config
+cp config.example.json config.json
+
+# 4. Create .env file
+cp .env.example .env
+
+# 5. Edit config.json and .env with your details
+nano config.json
+nano .env
+
+# 6. Start the bot
+npm start
