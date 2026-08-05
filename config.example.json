@@ -1,7 +1,7 @@
 {
   "bot": {
-    "name": "BIGST4CK",
-    "owner": "bigmanjtech™",
+    "name": "bigpannel",
+    "owner": "bigtechs2",
     "description": "Server Hosting & Automation"
   },
   "telegram": {
@@ -21,7 +21,6 @@
     }
   },
   "plans": [
-"plans": [
     { "name": "1 GB", "ram": 1024, "disk": 5120, "cpu": 50, "price": 1500, "currency": "TZS" },
     { "name": "2 GB", "ram": 2048, "disk": 10240, "cpu": 100, "price": 2500, "currency": "TZS" },
     { "name": "3 GB", "ram": 3072, "disk": 15360, "cpu": 150, "price": 3500, "currency": "TZS" },
@@ -33,11 +32,10 @@
     { "name": "9 GB", "ram": 9216, "disk": 46080, "cpu": 450, "price": 13000, "currency": "TZS" },
     { "name": "10 GB", "ram": 10240, "disk": 51200, "cpu": 500, "price": 15000, "currency": "TZS" },
     { "name": "Unlimited", "ram": 0, "disk": 0, "cpu": 0, "price": 25000, "currency": "TZS" }
-]
   ],
   "payments": {
     "method": "manual",
     "details": "halopesa: 255636756591\nHalopesa: 255636756591\nEmail: bigmanj.tech@gmail.com"
   },
-  "footer": "© BIGST4CK by bigmanjtech™"
+  "footer": "© bigpannel by bigmanjtech™"
 }
