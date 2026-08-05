@@ -14,7 +14,7 @@ http://t.me/bigpannelbot
 [![Fork](https://img.shields.io/badge/Fork-Repo-orange)](https://github.com/bigtechs2/BIGST4CK-Telegram/fork)
 [![Download ZIP](https://img.shields.io/badge/Download-ZIP-red)](https://github.com/bigtechs2/BIGST4CK-Telegram/archive/refs/heads/main.zip)
 
-**Built with ❤️ by bigmanjtech™**
+**Built by bigmanjtech™ with ♥︎**
 
 ---
 
@@ -35,7 +35,7 @@ http://t.me/bigpannelbot
 
 ## 🎯 About
 
-**BIGST4CK Telegram Bot** is a powerful server selling bot that integrates with **Pterodactyl** to automate server creation, user management, and payment verification. It's designed to help you sell hosting plans directly from Telegram.
+**bigpannelbot** is a powerful server selling bot that integrates with **Pterodactyl** to automate server creation, user management, and payment verification. It's designed to help you sell hosting plans directly from Telegram.
 
 ---
 
@@ -106,7 +106,7 @@ http://t.me/bigpannelbot
 
 ### Project Stucture 
 ```
-BIGST4CK-Telegram/
+bigpannelbot/
 ├── commands/
 │   ├── start.js
 │   ├── plans.js
