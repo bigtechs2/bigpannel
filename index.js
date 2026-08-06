@@ -33,6 +33,14 @@ const bot = new Telegraf(config.telegram.botToken);
 // ── Session middleware ──
 bot.use(session());
 
+// ── Ensure session exists for all updates ──
+bot.use(async (ctx, next) => {
+    if (!ctx.session) {
+        ctx.session = {};
+    }
+    await next();
+});
+
 // ── Middleware: Check if user is banned ──
 bot.use(async (ctx, next) => {
     if (ctx.from) {
@@ -47,12 +55,6 @@ bot.use(async (ctx, next) => {
 // ── Load all commands ──
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(f => f.endsWith('.js'));
-
-// ── Helper to register commands ──
-const registerCommand = (name, handler) => {
-    bot.command(name, handler);
-    console.log(`✅ Loaded command: /${name}`);
-};
 
 // ── Register standard commands ──
 commandFiles.forEach(file => {
@@ -75,7 +77,6 @@ const planAliases = ['1gb', '2gb', '3gb', '4gb', '5gb', '6gb', '7gb', '8gb', '9g
 planAliases.forEach(alias => {
     bot.command(alias, async (ctx) => {
         try {
-            // Find plan index
             const planMap = {
                 '1gb': 0, '2gb': 1, '3gb': 2, '4gb': 3,
                 '5gb': 4, '6gb': 5, '7gb': 6, '8gb': 7,
@@ -95,7 +96,6 @@ planAliases.forEach(alias => {
                 return await ctx.reply('⛔ You have been banned from using this bot.');
             }
 
-            // Only owner or premium can use unli
             if (plan.name === 'Unlimited' && !isOwner && !userDb.premium) {
                 return await ctx.reply('⛔ Only premium users or the owner can create unlimited servers.');
             }
@@ -105,7 +105,6 @@ planAliases.forEach(alias => {
             const username = `user_${user.id}_${Date.now().toString().slice(-6)}`;
             const password = `@datManj@9`;
 
-            // ── Create server using createPanel ──
             const result = await createPanel({
                 text: `${username}-${user.id}`,
                 reply: async (msg) => { await ctx.reply(msg); },
@@ -116,7 +115,6 @@ planAliases.forEach(alias => {
                 disk: plan.disk.toString()
             });
 
-            // ── Save to database ──
             userDb.servers = userDb.servers || [];
             userDb.servers.push({
                 serverId: result?.serverId || 'created',
@@ -127,67 +125,70 @@ planAliases.forEach(alias => {
             });
             db.saveUser(user.id, userDb);
 
-            // ── Send credentials to user ──
             await ctx.reply(
-                ` *${plan.name} Server Created!*\n\n` +
-                ` *Plan:* ${plan.name}\n` +
-                ` *RAM:* ${plan.ram === 0 ? '∞' : plan.ram + ' MB'}\n` +
-                ` *Disk:* ${plan.disk === 0 ? '∞' : plan.disk + ' MB'}\n` +
-                ` *CPU:* ${plan.cpu === 0 ? '∞' : plan.cpu + '%'}\n\n` +
+                `✅ *${plan.name} Server Created!*\n\n` +
+                `🖥️ *Plan:* ${plan.name}\n` +
+                `💾 *RAM:* ${plan.ram === 0 ? '∞' : plan.ram + ' MB'}\n` +
+                `💿 *Disk:* ${plan.disk === 0 ? '∞' : plan.disk + ' MB'}\n` +
+                `⚙️ *CPU:* ${plan.cpu === 0 ? '∞' : plan.cpu + '%'}\n\n` +
                 `*Login Details:*\n` +
-                ` ${config.pterodactyl.panelUrl}\n` +
-                ` Username: ${username}\n` +
-                ` Password: ${password}\n\n` +
+                `🔗 ${config.pterodactyl.panelUrl}\n` +
+                `👤 Username: ${username}\n` +
+                `🔑 Password: ${password}\n\n` +
                 `_Thank you for choosing BIGST4CK!_`
             );
 
             if (!isOwner) {
                 await bot.telegram.sendMessage(
                     config.telegram.ownerId,
-                    ` *${plan.name} Server Created*\n` +
+                    `📢 *${plan.name} Server Created*\n` +
                     `User: @${user.username || 'Unknown'} (ID: ${user.id})`
                 );
             }
 
         } catch (error) {
             console.error(`[${alias}] Error:`, error);
-            await ctx.reply(` Failed to create server: ${error.message}`);
+            await ctx.reply(`❌ Failed to create server: ${error.message}`);
         }
     });
-    console.log(` Loaded command: /${alias}`);
+    console.log(`✅ Loaded command: /${alias}`);
 });
 
 // ── Handle callback queries ──
 bot.action(/buy_plan_(\d+)/, async (ctx) => {
+    // Ensure session exists
+    if (!ctx.session) {
+        ctx.session = {};
+    }
+
     const planIndex = parseInt(ctx.match[1]);
-    const user = ctx.from;
     const plan = config.plans[planIndex];
 
     if (!plan) {
-        return await ctx.answerCbQuery(' Plan not found.');
+        return await ctx.answerCbQuery('❌ Plan not found.');
     }
 
     ctx.session.buyPlan = planIndex;
-    await ctx.answerCbQuery(' Plan selected!');
+    await ctx.answerCbQuery('✅ Plan selected!');
     await ctx.reply(
-        ` *Plan Selected: ${plan.name}*\n\n` +
-        ` RAM: ${plan.ram === 0 ? '∞' : plan.ram + ' MB'}\n` +
-        ` Disk: ${plan.disk === 0 ? '∞' : plan.disk + ' MB'}\n` +
-        ` CPU: ${plan.cpu === 0 ? '∞' : plan.cpu + '%'}\n` +
-        ` Price: ${plan.price.toLocaleString()} ${plan.currency}\n\n` +
+        `📋 *Plan Selected: ${plan.name}*\n\n` +
+        `💾 RAM: ${plan.ram === 0 ? '∞' : plan.ram + ' MB'}\n` +
+        `💿 Disk: ${plan.disk === 0 ? '∞' : plan.disk + ' MB'}\n` +
+        `⚙️ CPU: ${plan.cpu === 0 ? '∞' : plan.cpu + '%'}\n` +
+        `💰 Price: ${plan.price.toLocaleString()} ${plan.currency}\n\n` +
         `How would you like to pay?`,
         Markup.inlineKeyboard([
-            [Markup.button.callback(' Crypto Pay', 'pay_crypto')],
-            [Markup.button.callback(' Manual Payment', 'pay_manual')],
-            [Markup.button.callback(' Back', 'back_plans')]
+            [Markup.button.callback('💳 Crypto Pay', 'pay_crypto')],
+            [Markup.button.callback('📱 Manual Payment', 'pay_manual')],
+            [Markup.button.callback('🔙 Back', 'back_plans')]
         ])
     );
 });
 
 bot.action('pay_crypto', async (ctx) => {
-    await ctx.answerCbQuery(' Crypto payment coming soon!');
+    await ctx.answerCbQuery('💳 Crypto payment coming soon!');
     await ctx.reply(
-        ` *Crypto Payment*\n\n` +
+        `💳 *Crypto Payment*\n\n` +
         `Pay with USDT (TRC20) or BTC.\n\n` +
         `• USDT (TRC20): TXXX...\n` +
         `• BTC: 1XXX...\n\n` +
@@ -196,13 +197,23 @@ bot.action('pay_crypto', async (ctx) => {
 });
 
 bot.action('pay_manual', async (ctx) => {
+    // Ensure session exists
+    if (!ctx.session) {
+        ctx.session = {};
+    }
+
     const planIndex = ctx.session.buyPlan;
     const plan = config.plans[planIndex];
 
-    await ctx.answerCbQuery(' Manual payment selected');
+    if (planIndex === undefined || !plan) {
+        await ctx.answerCbQuery('❌ Please select a plan first.');
+        return;
+    }
+
+    await ctx.answerCbQuery('📱 Manual payment selected');
 
     const paymentMsg =
-        ` *Manual Payment*\n\n` +
+        `📱 *Manual Payment*\n\n` +
         `*Plan:* ${plan.name}\n` +
         `*Amount:* ${plan.price.toLocaleString()} ${plan.currency}\n\n` +
         `*Send payment to:*\n` +
@@ -216,7 +227,7 @@ bot.action('pay_manual', async (ctx) => {
 });
 
 bot.action('back_plans', async (ctx) => {
-    await ctx.answerCbQuery(' Back to plans');
+    await ctx.answerCbQuery('🔙 Back to plans');
     const { getPlansMessage } = require('./commands/plans');
     await getPlansMessage(ctx, config);
 });
@@ -224,17 +235,17 @@ bot.action('back_plans', async (ctx) => {
 // ── /confirm_payment ──
 bot.command('confirm_payment', async (ctx) => {
     const user = ctx.from;
-    const planIndex = ctx.session.buyPlan;
+    const planIndex = ctx.session?.buyPlan;
 
     if (planIndex === undefined) {
-        return await ctx.reply(' Please select a plan first. Use /plans');
+        return await ctx.reply('❌ Please select a plan first. Use /plans');
     }
 
     const plan = config.plans[planIndex];
     const userDb = db.getUser(user.id);
 
     if (userDb.pendingOrder) {
-        return await ctx.reply(' You already have a pending order. Please wait for verification.');
+        return await ctx.reply('⚠️ You already have a pending order. Please wait for verification.');
     }
 
     userDb.pendingOrder = {
@@ -249,7 +260,7 @@ bot.command('confirm_payment', async (ctx) => {
     const ownerId = config.telegram.ownerId;
     await bot.telegram.sendMessage(
         ownerId,
-        ` New Payment Pending\n\n` +
+        `📢 *New Payment Pending*\n\n` +
         `User: @${user.username || 'Unknown'} (ID: ${user.id})\n` +
         `Plan: ${plan.name}\n` +
         `Amount: ${plan.price.toLocaleString()} ${plan.currency}\n` +
@@ -258,10 +269,10 @@ bot.command('confirm_payment', async (ctx) => {
     );
 
     await ctx.reply(
-        ` Payment confirmation received!\n\n` +
+        `✅ *Payment confirmation received!*\n\n` +
         `Plan: ${plan.name}\n` +
         `Amount: ${plan.price.toLocaleString()} ${plan.currency}\n\n` +
-        ` Waiting for admin verification...\n` +
+        `⏳ Waiting for admin verification...\n` +
         `You will receive your server credentials shortly.`
     );
 });
@@ -269,7 +280,7 @@ bot.command('confirm_payment', async (ctx) => {
 // ── /verify (admin) ──
 bot.command('verify', async (ctx) => {
     if (ctx.from.id.toString() !== config.telegram.ownerId.toString()) {
-        return await ctx.reply(' Only the bot owner can verify payments.');
+        return await ctx.reply('⛔ Only the bot owner can verify payments.');
     }
 
     const args = ctx.message.text.split(' ');
@@ -284,7 +295,7 @@ bot.command('verify', async (ctx) => {
     const userDb = db.getUser(userId);
 
     if (!userDb || !userDb.pendingOrder) {
-        return await ctx.reply(' No pending order found for this user.');
+        return await ctx.reply('❌ No pending order found for this user.');
     }
 
     const order = userDb.pendingOrder;
@@ -315,18 +326,18 @@ bot.command('verify', async (ctx) => {
 
         await bot.telegram.sendMessage(
             userId,
-            ` Server Created Successfully!\n\n` +
-            ` Plan: ${plan.name}\n` +
-            ` Valid Until: ${new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString()}\n\n` +
-            `Panel Details:\n` +
-            ` ${config.pterodactyl.panelUrl}\n` +
-            ` Username: ${result?.username || 'check_panel'}\n` +
-            ` Password: ${result?.password || 'check_panel'}\n\n` +
-            `_Thank you for choosing bigpannel!_`
+            `✅ *Server Created Successfully!*\n\n` +
+            `🖥️ *Plan:* ${plan.name}\n` +
+            `📅 *Valid Until:* ${new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString()}\n\n` +
+            `*Panel Details:*\n` +
+            `🔗 ${config.pterodactyl.panelUrl}\n` +
+            `👤 Username: ${result?.username || 'check_panel'}\n` +
+            `🔑 Password: ${result?.password || 'check_panel'}\n\n` +
+            `_Thank you for choosing BIGST4CK!_`
         );
 
         await ctx.reply(
-            ` *Server created successfully!*\n\n` +
+            `✅ *Server created successfully!*\n\n` +
             `User: ${userId}\n` +
             `Plan: ${plan.name}\n\n` +
             `Credentials have been sent to the user.`
@@ -334,14 +345,14 @@ bot.command('verify', async (ctx) => {
 
     } catch (error) {
         console.error('[verify] Error:', error);
-        await ctx.reply(` Failed to create server: ${error.message}`);
+        await ctx.reply(`❌ Failed to create server: ${error.message}`);
     }
 });
 
 // ── /pending (admin) ──
 bot.command('pending', async (ctx) => {
     if (ctx.from.id.toString() !== config.telegram.ownerId.toString()) {
-        return await ctx.reply(' Only the bot owner can view pending orders.');
+        return await ctx.reply('⛔ Only the bot owner can view pending orders.');
     }
 
     const allUsers = db.getAllUsers();
@@ -357,10 +368,10 @@ bot.command('pending', async (ctx) => {
     }
 
     if (pending.length === 0) {
-        return await ctx.reply(' No pending orders.');
+        return await ctx.reply('📭 No pending orders.');
     }
 
-    let msg = ` *Pending Orders (${pending.length})*\n\n`;
+    let msg = `📋 *Pending Orders (${pending.length})*\n\n`;
     pending.forEach((order, i) => {
         msg += `${i+1}. User: ${order.userId}\n`;
         msg += `   Plan: ${order.planName}\n`;
@@ -374,7 +385,7 @@ bot.command('pending', async (ctx) => {
 // ── /ban (admin) ──
 bot.command('ban', async (ctx) => {
     if (ctx.from.id.toString() !== config.telegram.ownerId.toString()) {
-        return await ctx.reply(' Only the bot owner can ban users.');
+        return await ctx.reply('⛔ Only the bot owner can ban users.');
     }
 
     const args = ctx.message.text.split(' ');
@@ -387,16 +398,16 @@ bot.command('ban', async (ctx) => {
     if (userDb) {
         userDb.banned = true;
         db.saveUser(userId, userDb);
-        await ctx.reply(` User ${userId} has been banned.`);
+        await ctx.reply(`✅ User ${userId} has been banned.`);
     } else {
-        await ctx.reply(' User not found.');
+        await ctx.reply('❌ User not found.');
     }
 });
 
 // ── /unban (admin) ──
 bot.command('unban', async (ctx) => {
     if (ctx.from.id.toString() !== config.telegram.ownerId.toString()) {
-        return await ctx.reply(' Only the bot owner can unban users.');
+        return await ctx.reply('⛔ Only the bot owner can unban users.');
     }
 
     const args = ctx.message.text.split(' ');
@@ -409,25 +420,25 @@ bot.command('unban', async (ctx) => {
     if (userDb) {
         userDb.banned = false;
         db.saveUser(userId, userDb);
-        await ctx.reply(` User ${userId} has been unbanned.`);
+        await ctx.reply(`✅ User ${userId} has been unbanned.`);
     } else {
-        await ctx.reply(' User not found.');
+        await ctx.reply('❌ User not found.');
     }
 });
 
 // ── /restart (admin) ──
 bot.command('restart', async (ctx) => {
     if (ctx.from.id.toString() !== config.telegram.ownerId.toString()) {
-        return await ctx.reply(' Only the bot owner can restart the bot.');
+        return await ctx.reply('⛔ Only the bot owner can restart the bot.');
     }
-    await ctx.reply('› Restarting bot...');
+    await ctx.reply('🔄 Restarting bot...');
     process.exit(0);
 });
 
 // ── Start bot ──
 bot.launch().then(() => {
-    console.log('bigpannelbot is running!');
-    console.log(` bot username: @${bot.botInfo.username}`);
+    console.log('🤖 BIGST4CK Telegram Bot is running!');
+    console.log(`📱 Bot username: @${bot.botInfo.username}`);
 }).catch((err) => {
     console.error('Failed to start bot:', err);
 });
