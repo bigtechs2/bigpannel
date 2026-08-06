@@ -248,6 +248,7 @@ bot.command('confirm_payment', async (ctx) => {
         return await ctx.reply('⚠️ You already have a pending order. Please wait for verification.');
     }
 
+    // ── Save pending order ──
     userDb.pendingOrder = {
         plan: planIndex,
         planName: plan.name,
@@ -256,6 +257,10 @@ bot.command('confirm_payment', async (ctx) => {
         status: 'pending'
     };
     db.saveUser(user.id, userDb);
+
+    // ── Verify it was saved ──
+    const verifyUser = db.getUser(user.id);
+    console.log(`[confirm_payment] Saved pending order for ${user.id}:`, verifyUser.pendingOrder);
 
     const ownerId = config.telegram.ownerId;
     await bot.telegram.sendMessage(
@@ -292,10 +297,20 @@ bot.command('verify', async (ctx) => {
     }
 
     const userId = parseInt(args[1]);
+    if (isNaN(userId)) {
+        return await ctx.reply('❌ Invalid user ID. Please provide a valid number.');
+    }
+
+    // ── Debug: List all users ──
+    console.log(`[verify] Checking pending order for user ${userId}`);
+    const allUsers = db.getAllUsers();
+    console.log('[verify] All users in DB:', Object.keys(allUsers));
+
     const userDb = db.getUser(userId);
+    console.log(`[verify] User ${userId} data:`, userDb);
 
     if (!userDb || !userDb.pendingOrder) {
-        return await ctx.reply('❌ No pending order found for this user.');
+        return await ctx.reply(`❌ No pending order found for user ${userId}.`);
     }
 
     const order = userDb.pendingOrder;
@@ -380,6 +395,25 @@ bot.command('pending', async (ctx) => {
     });
 
     await ctx.reply(msg);
+});
+
+// ── /debug (admin) ── Show all users
+bot.command('debug', async (ctx) => {
+    if (ctx.from.id.toString() !== config.telegram.ownerId.toString()) {
+        return await ctx.reply('⛔ Only the bot owner can use this command.');
+    }
+
+    const allUsers = db.getAllUsers();
+    let msg = `📊 *Database Users (${Object.keys(allUsers).length})*\n\n`;
+    for (const [userId, data] of Object.entries(allUsers)) {
+        const hasPending = data.pendingOrder ? '✅' : '❌';
+        const serverCount = data.servers ? data.servers.length : 0;
+        msg += `ID: ${userId} | Pending: ${hasPending} | Servers: ${serverCount}\n`;
+        if (data.pendingOrder) {
+            msg += `   Plan: ${data.pendingOrder.planName} | ${data.pendingOrder.price.toLocaleString()}\n`;
+        }
+    }
+    await ctx.reply(msg || 'No users found.');
 });
 
 // ── /ban (admin) ──
